@@ -50,7 +50,7 @@ app = FastAPI(
     ),
     contact={
         "name": "DataOps Gym",
-        "url": "https://github.com/graheetphartyal23/Dataops--GYM",
+        "url": "https://github.com/graheetphartyal23/DataOps-GYM",
     },
     docs_url=None,
 )

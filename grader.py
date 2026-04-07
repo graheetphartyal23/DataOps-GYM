@@ -137,7 +137,8 @@ def grade_task_result(
         + 0.15 * uncertainty_accuracy
         + 0.15 * consistency_score
     )
-    return max(0.0, min(1.0, task_score))
+    eps = 1e-6
+    return max(eps, min(1.0 - eps, task_score))
 
 
 def task_failure_messages(
