@@ -23,7 +23,6 @@ pinned: false
 [![Pydantic](https://img.shields.io/badge/Pydantic-Schema_Validation-E92063?logo=pydantic&logoColor=white)](https://docs.pydantic.dev)
 [![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?logo=docker&logoColor=white)](https://docker.com)
 [![HuggingFace](https://img.shields.io/badge/🤗_HuggingFace-Spaces_Compatible-FFD21E)](https://huggingface.co/spaces)
-[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
 <br/>
 
@@ -51,9 +50,6 @@ pinned: false
 - [Task Difficulty Tiers](#-task-difficulty-tiers)
 - [Scoring & Reward System](#-scoring--reward-system)
 - [HTTP API Reference](#-http-api-reference)
-- [Quick Start](#-quick-start)
-- [Docker Deployment](#-docker-deployment)
-- [Contributing](#-contributing)
 
 ---
 
