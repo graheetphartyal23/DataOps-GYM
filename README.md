@@ -366,7 +366,6 @@ The FastAPI server exposes a clean REST interface for agent integration:
 
 **Built to make data-cleaning agents honest — not just accurate.**
 
-*The only benchmark where doing nothing is sometimes the right answer.*
 
 <br/>
 
