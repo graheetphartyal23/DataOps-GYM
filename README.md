@@ -362,17 +362,6 @@ The FastAPI server exposes a clean REST interface for agent integration:
 
 ```
 
-The API server starts at **`http://localhost:7860`**
-Interactive docs available at **`http://localhost:7860/docs`**
-
----
-
-
----
-
- Make your changes, then open a Pull Request
-```
-
 <div align="center">
 
 <br/>
