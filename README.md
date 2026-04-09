@@ -360,8 +360,6 @@ The FastAPI server exposes a clean REST interface for agent integration:
 | `/docs` | `GET` | — | Interactive Swagger UI |
 
 
-```
-
 <div align="center">
 
 <br/>
