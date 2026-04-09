@@ -32,6 +32,7 @@ pinned: false
 > DataOps GYM is an interactive gym environment for training and benchmarking LLM-based data-cleaning agents —
 > with dense per-step rewards, structured action protocols, and deliberate adversarial traps
 > designed to expose hallucination, overcorrection, and overconfidence.
+> **The first benchmark that penalizes an LLM for being too confident about dirty data — not just for being wrong.**
 
 <br/>
 
@@ -257,8 +258,6 @@ The environment enforces **follow-through discipline** across steps:
 
 **Agent strategy:** Detect duplicates → deduplicate → fill missing fields. No traps. No ambiguity.
 
-**Max steps:** 7 &nbsp;|&nbsp; **Variants:** 2
-
 ---
 
 ### 🟡 Medium — `medium_normalization_task`
@@ -273,8 +272,6 @@ The environment enforces **follow-through discipline** across steps:
 - Invalid email tokens (e.g., `[at]` instead of `@`, missing `@` entirely)
 
 **Agent strategy:** Normalize casing to `title_case`, repair malformed emails, deduplicate. Validators check format correctness, not just non-null values.
-
-**Max steps:** 9 &nbsp;|&nbsp; **Variants:** 2
 
 ---
 
@@ -294,8 +291,6 @@ The environment enforces **follow-through discipline** across steps:
   - `A. J. Brown` — a valid abbreviated name
 
 **Agent strategy:** Nuanced multi-step reasoning, cross-record constraint checking, confident abstention, and deliberate non-intervention on valid traps.
-
-**Max steps:** 14 &nbsp;|&nbsp; **Variants:** 2
 
 ---
 
@@ -342,14 +337,13 @@ Final Score =  0.50 × normalized_record_score
              + 0.15 × consistency_score
 ```
 
-| Metric | What It Measures |
-|---|---|
-| `normalized_record_score` | Average per-record cumulative reward, mapped to [0, 1] |
-| `hallucination_rate` | Fraction of `fix_value` actions that had no evidentiary basis |
-| `uncertainty_accuracy` | Fraction of `cannot_determine` actions that were genuinely correct |
-| `consistency_score` | Fraction of related-row pair decisions handled with consistent strategy |
+| Task | Difficulty | Score |
+|---|---|---|
+| `easy_vendor_onboarding` | 🟢 Easy | `0.73` |
+| `medium_customer_normalization` | 🟡 Medium | `0.40` |
+| `hard_customer_conflicts` | 🔴 Hard | `0.39` |
 
-> 📌 **Scoring above 0.85 on the hard tier requires genuine multi-step reasoning — not pattern matching.**
+> Evaluated using `inference.py` with `Qwen/Qwen3-VL-30B-A3B-Instruct` via Novita.
 
 ### Failure Telemetry
 
@@ -369,53 +363,7 @@ The FastAPI server exposes a clean REST interface for agent integration:
 | `/health` | `GET` | — | Liveness probe |
 | `/docs` | `GET` | — | Interactive Swagger UI |
 
-### Example: Full Episode via REST
 
-```python
-import requests
-
-BASE = "http://localhost:7860"
-
-# 1. Reset — start a seeded hard episode
-obs = requests.post(f"{BASE}/reset", json={"seed": 0, "task_name": "hard"}).json()
-
-# 2. Step loop
-done = False
-while not done:
-    action = {
-        "action_type": "detect_issue",
-        "record_id": "21",
-        "field": "email",
-        "confidence": 0.88
-    }
-    result = requests.post(f"{BASE}/step", json=action).json()
-    print(f"Reward: {result['reward']:.3f} | Done: {result['done']}")
-    done = result["done"]
-
-# 3. Final score
-state = requests.get(f"{BASE}/state").json()
-print(f"Final Score: {state['final_task_score']:.4f}")
-```
-
----
-
-## 🚀 Quick Start
-
-### Option 1 — Standard pip
-
-```bash
-# Clone the repository
-git clone https://github.com/graheetphartyal23/DataOps-GYM.git
-cd DataOps-GYM
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Start the FastAPI server
-python -m server.app
-
-# In a separate terminal — run the reference baseline agent
-python inference.py
 ```
 
 The API server starts at **`http://localhost:7860`**
@@ -423,56 +371,11 @@ Interactive docs available at **`http://localhost:7860/docs`**
 
 ---
 
-### Option 2 — Using `uv` (faster installs)
 
-```bash
-uv sync
-uv run python -m server.app
+---
+
+ Make your changes, then open a Pull Request
 ```
-
----
-
-## 🐳 Docker Deployment
-
-```bash
-# Build the image
-docker build -t dataops-gym .
-
-# Run the container
-docker run -p 7860:7860 dataops-gym
-```
-
-The `Dockerfile` and `openenv.yaml` are pre-configured for **one-click deployment to HuggingFace Spaces**.
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome — especially new task domains, improved validation logic, or smarter baseline agents.
-
-```bash
-# 1. Fork and clone
-git clone https://github.com/<your-username>/DataOps-GYM.git
-
-# 2. Create a feature branch
-git checkout -b feature/new-task-domain
-
-# 3. Make your changes, then open a Pull Request
-```
-
-**When adding new tasks**, please follow the `TaskDefinition` TypedDict schema in `task.py` and ensure every new task includes:
-- `initial_table` with realistic domain data
-- `hidden_issues` with typed, structured issue definitions
-- `expected_outcome` with validation rules
-- At least 2 variants (`variant_count = 2`)
-
----
-
-## 📄 License
-
-This project is open source. See [LICENSE](LICENSE) for complete terms.
-
----
 
 <div align="center">
 
