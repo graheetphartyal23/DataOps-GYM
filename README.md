@@ -8,6 +8,12 @@ app_port: 7860
 pinned: false
 ---
 
+## Live demo
+
+[![Open in HuggingFace Spaces](https://img.shields.io/badge/Open%20in-HuggingFace%20Spaces-FF9D00?style=for-the-badge&logo=huggingface&logoColor=white)](https://huggingface.co/spaces/graheetphartyal/dataops-env)
+
+> [huggingface.co/spaces/graheetphartyal/dataops-env](https://huggingface.co/spaces/graheetphartyal/dataops-env)
+
 <div align="center">
 
 # 🏋️ DataOps GYM
